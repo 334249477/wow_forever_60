@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from './Icon.astro';
+import CampBuilder from './CampBuilder.astro';
+import { localizedPath, ui, type Locale } from '../i18n';
+import type { Guide } from '../data/guides';
+
+interface Props { locale: Locale; guide: Guide; }
+const { locale, guide } = Astro.props;
+const t = ui[locale];
+---
+<BaseLayout locale={locale} title={guide.title} description={guide.description}>
+  <header class="guide-hero">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label={locale === 'zh' ? '面包屑' : 'Breadcrumb'}>
+        <a href={localizedPath(locale)}>{t.home}</a><span aria-hidden="true">/</span><span>{guide.shortTitle}</span>
+      </nav>
+      <div class="guide-hero-grid">
+        <div>
+          <div class="eyebrow">{guide.eyebrow}</div>
+          <h1>{guide.heading}</h1>
+          <p class="lead">{guide.lead}</p>
+          <div class="guide-meta">
+            <span><Icon name="clock" size={15} />{t.updated} {guide.updated}</span>
+            <span><Icon name="shield" size={15} />{t.official}</span>
+            <span class="tag tag-orange">{t.verified}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container guide-layout">
+    <article class="guide-content">
+      <section class="answer-box" aria-labelledby="quick-answer">
+        <div class="answer-label" id="quick-answer"><Icon name="spark" size={17} />{locale === 'zh' ? '先看结论' : 'THE SHORT ANSWER'}</div>
+        <p>{guide.answer}</p>
+      </section>
+
+      {guide.slug === 'camping' && <CampBuilder locale={locale} />}
+
+      {guide.blocks.map((block) => (
+        <section class="content-section" id={block.id}>
+          <h2>{block.title}</h2>
+          {'intro' in block && block.intro && <p>{block.intro}</p>}
+
+          {block.type === 'text' && <>
+            {block.paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
+            {block.bullets && <ul>{block.bullets.map((item) => <li>{item}</li>)}</ul>}
+          </>}
+
+          {block.type === 'steps' && <div class="step-grid">
+            {block.items.map((item, index) => <div class="step-card"><span class="step-number">{index + 1}</span><h3>{item.title}</h3><p>{item.text}</p></div>)}
+          </div>}
+
+          {block.type === 'cards' && <div class="info-cards">
+            {block.items.map((item) => <div class="info-card">{item.tag && <span class={`tag ${item.tagStyle === 'orange' ? 'tag-orange' : ''}`}>{item.tag}</span>}<h3>{item.title}</h3><p>{item.text}</p></div>)}
+          </div>}
+
+          {block.type === 'table' && <div class="table-wrap">
+            <table>
+              <thead><tr>{block.headers.map((header) => <th scope="col">{header}</th>)}</tr></thead>
+              <tbody>{block.rows.map((row) => <tr>{row.map((cell, index) => <td>{index === 0 ? <strong>{cell}</strong> : cell}</td>)}</tr>)}</tbody>
+            </table>
+          </div>}
+
+          {block.type === 'checklist' && <>
+            <div class="check-progress">
+              <span data-check-count>0 / {block.items.length}</span>
+              <div class="progress-track" role="progressbar" aria-valuemin={0} aria-valuemax={block.items.length} aria-valuenow={0}><div class="progress-bar"></div></div>
+            </div>
+            <div class="checklist" data-storage={`forever60-${locale}-${guide.slug}-${block.id}`}>
+              {block.items.map((item, index) => <label class="check-item"><input type="checkbox" data-check-id={`${index}`} /><span>{item}</span></label>)}
+            </div>
+          </>}
+
+          {'note' in block && block.note && <aside class="callout"><strong>{block.note.title}</strong><p>{block.note.text}</p></aside>}
+        </section>
+      ))}
+
+      <div class="source-box">
+        <Icon name="book" size={20} />
+        <div>{locale === 'zh' ? '本文根据官方公开资料整理，主观建议会单独说明；正式服数值与热修仍以游戏内为准。' : 'This guide is based on official public material. Editorial advice is identified separately; live values and hotfixes always take precedence in game.'} <a href={guide.source} target="_blank" rel="noreferrer">{t.source}</a></div>
+      </div>
+
+      <a class="guide-next" href={localizedPath(locale, guide.next.slug)}>
+        <div><strong>{locale === 'zh' ? '下一步' : 'NEXT UP'}</strong><p>{guide.next.title}</p></div>
+        <span class="button button-primary button-small">{guide.next.label}<Icon name="arrow" size={16} /></span>
+      </a>
+    </article>
+
+    <aside class="toc" aria-label={locale === 'zh' ? '本页目录' : 'On this page'}>
+      <strong>{locale === 'zh' ? '本页目录' : 'On this page'}</strong>
+      <a href="#quick-answer">{locale === 'zh' ? '先看结论' : 'Short answer'}</a>
+      {guide.slug === 'camping' && <a href="#camp-builder">{locale === 'zh' ? '营地搭配器' : 'Camp builder'}</a>}
+      {guide.blocks.map((block) => <a href={`#${block.id}`}>{block.title}</a>)}
+    </aside>
+  </div>
+
+  <script>
+    document.querySelectorAll<HTMLElement>('.checklist').forEach((list) => {
+      const key = list.dataset.storage;
+      const inputs = Array.from(list.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'));
+      const section = list.closest('.content-section');
+      const count = section?.querySelector<HTMLElement>('[data-check-count]');
+      const bar = section?.querySelector<HTMLElement>('.progress-bar');
+      const track = section?.querySelector<HTMLElement>('.progress-track');
+      const update = () => {
+        const done = inputs.filter((input) => input.checked).length;
+        if (count) count.textContent = `${done} / ${inputs.length}`;
+        if (bar) bar.style.width = `${(done / inputs.length) * 100}%`;
+        track?.setAttribute('aria-valuenow', String(done));
+      };
+      try {
+        const saved = JSON.parse(localStorage.getItem(key ?? '') ?? '[]') as string[];
+        inputs.forEach((input) => { input.checked = saved.includes(input.dataset.checkId ?? ''); });
+      } catch {}
+      inputs.forEach((input) => input.addEventListener('change', () => {
+        const checked = inputs.filter((item) => item.checked).map((item) => item.dataset.checkId ?? '');
+        try { localStorage.setItem(key ?? '', JSON.stringify(checked)); } catch {}
+        update();
+      }));
+      update();
+    });
+  </script>
+</BaseLayout>

@@ -1,0 +1,97 @@
+---
+import Icon from './Icon.astro';
+import { campFeatures } from '../data/camps';
+import type { Locale } from '../i18n';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const features = campFeatures[locale];
+const copy = locale === 'zh' ? {
+  title: '三人营地搭配器', intro: '选择你们拥有的专业，最多3项。结果只在浏览器里生成，可直接复制给队友。',
+  selected: '当前营地', empty: '还没有选择物件。建议先补齐队伍缺少的属性或回复增益。', slots: '个空位', copy: '复制营地清单', copied: '已复制，可以发给队友了', clear: '清空',
+  prefix: '无限60 · 三人基础篝火清单', stay: '放置后，靠近篝火坐下或制作至少1分钟。', conflict: '注意互斥',
+} : {
+  title: 'Three-slot camp builder', intro: 'Choose professions available to your group, up to three. The result stays in your browser and can be copied for your party.',
+  selected: 'Your camp', empty: 'No features selected. Start by filling a stat or sustain gap in your group.', slots: 'slots left', copy: 'Copy camp checklist', copied: 'Copied—ready to share with your party', clear: 'Clear',
+  prefix: 'Forever 60 · Basic Campfire checklist', stay: 'After placing, sit or craft near the fire for at least one minute.', conflict: 'Conflict note',
+};
+---
+<section class="tool-shell" id="camp-builder" aria-labelledby="camp-builder-title">
+  <div class="section-kicker">INTERACTIVE TOOL</div>
+  <h2 id="camp-builder-title" style="margin-bottom: 8px;">{copy.title}</h2>
+  <p class="muted" style="font-size: 14px; margin-bottom: 20px;">{copy.intro}</p>
+  <div class="profession-picker" role="group" aria-label={copy.title}>
+    {features.map((feature) => <button class="profession-button" type="button" data-feature={feature.id} aria-pressed="false">{feature.profession}<small>{feature.item}</small></button>)}
+  </div>
+  <div class="camp-summary">
+    <div class="camp-summary-header"><h3>{copy.selected}</h3><span class="tag" data-slots>3 {copy.slots}</span></div>
+    <div class="camp-selection" data-selection><p class="camp-empty">{copy.empty}</p></div>
+    <div class="button-row" style="margin-top: 17px;">
+      <button class="button button-primary button-small" type="button" data-copy-camp><Icon name="copy" size={16} />{copy.copy}</button>
+      <button class="button button-ghost button-small" type="button" data-clear-camp>{copy.clear}</button>
+    </div>
+    <p class="copy-status" role="status" aria-live="polite" data-copy-status></p>
+  </div>
+  <script id="camp-data" type="application/json" set:html={JSON.stringify({ features, copy })}></script>
+  <script>
+    const root = document.querySelector<HTMLElement>('#camp-builder');
+    const dataNode = document.querySelector<HTMLElement>('#camp-data');
+    if (root && dataNode) {
+      const { features, copy } = JSON.parse(dataNode.textContent ?? '{}');
+      const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-feature]'));
+      const selection = root.querySelector<HTMLElement>('[data-selection]');
+      const slots = root.querySelector<HTMLElement>('[data-slots]');
+      const status = root.querySelector<HTMLElement>('[data-copy-status]');
+      const selected = new Set<string>();
+      const render = () => {
+        buttons.forEach((button) => {
+          const id = button.dataset.feature ?? '';
+          button.setAttribute('aria-pressed', String(selected.has(id)));
+          button.disabled = selected.size >= 3 && !selected.has(id);
+        });
+        if (slots) slots.textContent = `${3 - selected.size} ${copy.slots}`;
+        if (selection) {
+          selection.replaceChildren();
+          if (selected.size === 0) {
+            const empty = document.createElement('p');
+            empty.className = 'camp-empty';
+            empty.textContent = copy.empty;
+            selection.append(empty);
+          } else {
+            features.filter((feature: { id: string }) => selected.has(feature.id)).forEach((feature: { id: string; profession: string; item: string; effect: string; conflict: string }) => {
+              const item = document.createElement('div');
+              item.className = 'camp-choice';
+              const title = document.createElement('strong');
+              title.textContent = `${feature.profession} · ${feature.item}`;
+              const effect = document.createElement('span');
+              effect.textContent = feature.effect;
+              const conflict = document.createElement('span');
+              conflict.textContent = `${copy.conflict}: ${feature.conflict}`;
+              item.append(title, effect, conflict);
+              selection.append(item);
+            });
+          }
+        }
+        if (status) status.textContent = '';
+      };
+      buttons.forEach((button) => button.addEventListener('click', () => {
+        const id = button.dataset.feature ?? '';
+        if (selected.has(id)) selected.delete(id);
+        else if (selected.size < 3) selected.add(id);
+        render();
+      }));
+      root.querySelector('[data-clear-camp]')?.addEventListener('click', () => { selected.clear(); render(); });
+      root.querySelector('[data-copy-camp]')?.addEventListener('click', async () => {
+        const chosen = features.filter((feature: { id: string }) => selected.has(feature.id));
+        const lines = [copy.prefix, ...chosen.map((feature: { profession: string; item: string; effect: string; conflict: string }) => `- ${feature.profession} · ${feature.item}: ${feature.effect} (${feature.conflict})`), copy.stay];
+        try {
+          await navigator.clipboard.writeText(lines.join('\n'));
+          if (status) status.textContent = copy.copied;
+        } catch {
+          if (status) status.textContent = lines.join('\n');
+        }
+      });
+      render();
+    }
+  </script>
+</section>

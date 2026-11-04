@@ -1,0 +1,125 @@
+---
+import Icon from '../components/Icon.astro';
+import { alternatePath, localizedPath, navItems, siteNames, ui, type Locale } from '../i18n';
+import '../styles/global.css';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  canonicalPath?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const { locale, title, description, canonicalPath, image = '/og.png', noindex = false } = Astro.props;
+const t = ui[locale];
+const otherLocale: Locale = locale === 'zh' ? 'en' : 'zh';
+const pathname = Astro.url.pathname;
+const alternate = alternatePath(pathname, otherLocale);
+const canonical = new URL(canonicalPath ?? pathname, Astro.site);
+const otherUrl = new URL(alternate, Astro.site);
+const fullTitle = title.includes(siteNames[locale]) ? title : `${title} · ${siteNames[locale]}`;
+const items = navItems(locale);
+---
+<!doctype html>
+<html lang={locale === 'zh' ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#173f3a" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,follow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={locale === 'zh' ? 'zh-CN' : 'en'} href={canonical} />
+    <link rel="alternate" hreflang={otherLocale === 'zh' ? 'zh-CN' : 'en'} href={otherUrl} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/zh/', Astro.site)} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteNames[locale]} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: siteNames[locale],
+      url: new URL(localizedPath(locale), Astro.site).href,
+      inLanguage: locale === 'zh' ? 'zh-CN' : 'en',
+    })} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.skip}</a>
+    <div class="announcement">
+      <div class="container announcement-inner">
+        <span><span class="live-dot"></span>{locale === 'zh' ? '11月5日 07:00 全球同步开服' : 'Global launch: November 5, 07:00 Beijing time'}</span>
+        <a href={localizedPath(locale, 'launch')}>{locale === 'zh' ? '先做这6件事' : 'Do these 6 things first'} <Icon name="arrow" size={15} /></a>
+      </div>
+    </div>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href={localizedPath(locale)} aria-label={`${siteNames[locale]} ${t.home}`}>
+          <span class="brand-mark"><Icon name="campfire" size={25} /></span>
+          <span class="brand-copy"><strong>{siteNames[locale]}</strong><small>FOREVER 60</small></span>
+        </a>
+        <nav class="desktop-nav" aria-label={locale === 'zh' ? '主导航' : 'Main navigation'}>
+          {items.map((item) => <a href={item.href} class={pathname.startsWith(item.href) ? 'active' : ''}>{item.label}</a>)}
+        </nav>
+        <div class="header-actions">
+          <a class="language-link" href={alternate} hreflang={otherLocale === 'zh' ? 'zh-CN' : 'en'} aria-label={t.switchLabel}><Icon name="globe" size={17} /><span>{t.switchLanguage}</span></a>
+          <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label={t.menu}><Icon name="menu" size={23} /></button>
+        </div>
+      </div>
+      <nav id="mobile-nav" class="mobile-nav" hidden aria-label={locale === 'zh' ? '手机导航' : 'Mobile navigation'}>
+        <div class="container">
+          {items.map((item) => <a href={item.href}>{item.label}<Icon name="arrow" size={17} /></a>)}
+        </div>
+      </nav>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="brand brand-footer" href={localizedPath(locale)}>
+            <span class="brand-mark"><Icon name="campfire" size={25} /></span>
+            <span class="brand-copy"><strong>{siteNames[locale]}</strong><small>FOREVER 60</small></span>
+          </a>
+          <p>{t.footerNote}</p>
+        </div>
+        <div class="footer-links">
+          <strong>{locale === 'zh' ? '常用攻略' : 'Popular guides'}</strong>
+          {items.slice(0, 4).map((item) => <a href={item.href}>{item.label}</a>)}
+        </div>
+        <div class="footer-meta">
+          <strong>{locale === 'zh' ? '资料说明' : 'Source notes'}</strong>
+          <p>{t.dataNote}</p>
+          <a href="https://wow.blizzard.cn/forever/" target="_blank" rel="noreferrer">{t.source}<Icon name="external" size={14} /></a>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© 2026 {siteNames[locale]}</span>
+        <span>{t.notOfficial}</span>
+      </div>
+    </footer>
+    <script>
+      const menuButton = document.querySelector<HTMLButtonElement>('.menu-button');
+      const mobileNav = document.querySelector<HTMLElement>('#mobile-nav');
+      menuButton?.addEventListener('click', () => {
+        const open = menuButton.getAttribute('aria-expanded') === 'true';
+        menuButton.setAttribute('aria-expanded', String(!open));
+        if (mobileNav) mobileNav.hidden = open;
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && mobileNav && menuButton) {
+          mobileNav.hidden = true;
+          menuButton.setAttribute('aria-expanded', 'false');
+        }
+      });
+    </script>
+  </body>
+</html>

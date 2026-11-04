@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { classInfo } from '../../data/classes';
+import { localizedPath, locales, ui, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { lang: locale }, props: { locale } }));
+}
+const { locale } = Astro.props as { locale: Locale };
+const t = ui[locale];
+const classes = classInfo[locale];
+const copy = locale === 'zh' ? {
+  title: '无限服职业选择器｜30秒找到适合你的职业', short: '职业选择', description: '按职责、独狼或组队、游戏经验选择魔兽世界无限服职业。九个职业入门建议，没有看不懂的强度榜。',
+  eyebrow: 'CLASS FINDER · 入门建议', heading: '别问谁最强，先问谁适合你', lead: '三个问题，给你三个匹配建议。结果基于职责与上手特点，不是DPS排名，也不会替你做最后决定。',
+  answer: '第一次玩、以单人任务为主：先试猎人或圣骑士；喜欢多职责再看德鲁伊。有固定队伍且愿意承担责任，再考虑战士坦克或治疗。真正重要的是你愿意长期玩它的玩法。',
+  toolTitle: '你的开局匹配', role: '想承担什么职责？', any: '还没想好', tank: '坦克', healer: '治疗', dps: '输出',
+  style: '大多数时候怎么玩？', solo: '独狼任务', group: '和朋友组队', experience: '你的经典60级经验？', new: '第一次玩', returning: '以前玩过', veteran: '非常熟悉',
+  submit: '给我三个建议', result: '匹配结果', copy: '复制结果', copied: '已复制', disclaimer: '入门匹配，不是强度排名',
+  directory: '九个职业，各自适合谁？', directoryLead: '所有建议都基于玩法特点；职业强弱可能随正式服热修变化。',
+  next: '职业选好了，接下来看懂1—60级的节奏。', nextLabel: '查看练级总览', resultPrefix: '无限60 · 我的职业匹配',
+} : {
+  title: 'WoW Forever class finder | Find your class in 30 seconds', short: 'Class finder', description: 'Choose a WoW Forever class by role, solo or group play, and experience. Beginner guidance for all nine classes without an unexplained tier list.',
+  eyebrow: 'CLASS FINDER · STARTER ADVICE', heading: 'Do not ask who is best. Ask what fits.', lead: 'Three questions, three matching suggestions. This is about roles and learning curves, not DPS rankings—and the final choice stays with you.',
+  answer: 'New and mostly questing alone? Start with Hunter or Paladin; consider Druid for multiple roles. With a regular group, Warrior tanking or healing may be worth the extra responsibility. The best class is one whose everyday gameplay you will still enjoy at level 60.',
+  toolTitle: 'Your starting match', role: 'Which role appeals to you?', any: 'Not sure yet', tank: 'Tank', healer: 'Healer', dps: 'Damage',
+  style: 'How will you play most often?', solo: 'Solo questing', group: 'With a regular group', experience: 'Your Classic level-60 experience?', new: 'This is my first time', returning: 'I played before', veteran: 'I know it well',
+  submit: 'Show my three matches', result: 'Your matches', copy: 'Copy result', copied: 'Copied', disclaimer: 'Starter matches, not a power ranking',
+  directory: 'All nine classes, in plain language', directoryLead: 'These suggestions concern playstyle. Class balance can change with live hotfixes.',
+  next: 'Class chosen. Now understand the level 1—60 journey.', nextLabel: 'Leveling overview', resultPrefix: 'Forever 60 · My class matches',
+};
+---
+<BaseLayout locale={locale} title={copy.title} description={copy.description}>
+  <header class="guide-hero">
+    <div class="container">
+      <nav class="breadcrumbs"><a href={localizedPath(locale)}>{t.home}</a><span aria-hidden="true">/</span><span>{copy.short}</span></nav>
+      <div class="eyebrow">{copy.eyebrow}</div>
+      <h1>{copy.heading}</h1>
+      <p class="lead">{copy.lead}</p>
+      <div class="guide-meta"><span><Icon name="clock" size={15} />{t.updated} 2026-11-03</span><span class="tag tag-orange">{locale === 'zh' ? '编辑建议' : 'Editorial guidance'}</span></div>
+    </div>
+  </header>
+
+  <div class="narrow" style="padding-top: 32px;">
+    <section class="answer-box"><div class="answer-label"><Icon name="spark" size={17} />{locale === 'zh' ? '先看结论' : 'THE SHORT ANSWER'}</div><p>{copy.answer}</p></section>
+
+    <section class="tool-shell" aria-labelledby="class-tool-title">
+      <h2 id="class-tool-title" style="margin-bottom: 20px;">{copy.toolTitle}</h2>
+      <form id="class-form">
+        <div class="tool-form">
+          <div class="field"><label for="class-role">{copy.role}</label><select id="class-role" name="role"><option value="any">{copy.any}</option><option value="tank">{copy.tank}</option><option value="healer">{copy.healer}</option><option value="dps">{copy.dps}</option></select></div>
+          <div class="field"><label for="class-style">{copy.style}</label><select id="class-style" name="style"><option value="solo">{copy.solo}</option><option value="group">{copy.group}</option></select></div>
+          <div class="field"><label for="class-experience">{copy.experience}</label><select id="class-experience" name="experience"><option value="new">{copy.new}</option><option value="returning">{copy.returning}</option><option value="veteran">{copy.veteran}</option></select></div>
+        </div>
+        <button class="button button-primary tool-submit" type="submit">{copy.submit}<Icon name="arrow" size={18} /></button>
+      </form>
+      <div class="result-panel" id="class-result" hidden>
+        <div class="result-heading"><div><h2>{copy.result}</h2><span class="small muted">{copy.disclaimer}</span></div><button class="button button-ghost button-small" type="button" data-copy-classes><Icon name="copy" size={15} />{copy.copy}</button></div>
+        <div class="class-results" data-class-results></div>
+        <p class="copy-status" role="status" aria-live="polite" data-class-status></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header"><div><h2>{copy.directory}</h2><p>{copy.directoryLead}</p></div></div>
+      <div class="class-directory">
+        {classes.map((item) => <article class="class-card"><div class="class-card-header"><h3>{item.name}</h3><span class="tag">{item.roleText}</span></div><p>{item.summary}</p></article>)}
+      </div>
+    </section>
+
+    <div class="source-box"><Icon name="book" size={20} /><div>{locale === 'zh' ? '本页为基于官方职责和经典玩法的入门建议，不涉及未经实测的强度排名。' : 'This page provides editorial starter advice based on official roles and Classic-style play. It does not claim unverified power rankings.'} <a href="https://news.blizzard.com/en-us/article/24303313/world-of-warcraft-forever-deep-dive-panel-recap" target="_blank" rel="noreferrer">{t.source}</a></div></div>
+    <a class="guide-next" href={localizedPath(locale, 'leveling')}><div><strong>{locale === 'zh' ? '下一步' : 'NEXT UP'}</strong><p>{copy.next}</p></div><span class="button button-primary button-small">{copy.nextLabel}<Icon name="arrow" size={16} /></span></a>
+  </div>
+
+  <script id="class-picker-data" type="application/json" set:html={JSON.stringify({ classes, copy })}></script>
+  <script>
+    const form = document.querySelector<HTMLFormElement>('#class-form');
+    const dataNode = document.querySelector<HTMLElement>('#class-picker-data');
+    const resultPanel = document.querySelector<HTMLElement>('#class-result');
+    if (form && dataNode && resultPanel) {
+      const { classes, copy } = JSON.parse(dataNode.textContent ?? '{}');
+      let currentMatches: { name: string; roleText: string; reason: string }[] = [];
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const data = new FormData(form);
+        const role = String(data.get('role'));
+        const style = String(data.get('style'));
+        const experience = String(data.get('experience'));
+        const ranked = classes.map((item: { roles: string[]; solo: number; beginner: number; relaxed: number }) => {
+          let score = 0;
+          if (role !== 'any') score += item.roles.includes(role) ? 20 : -100;
+          score += style === 'solo' ? item.solo * 3 : (item.roles.includes('tank') || item.roles.includes('healer') ? 8 : 2);
+          score += experience === 'new' ? item.beginner * 3 : experience === 'returning' ? item.beginner : item.relaxed;
+          return { ...item, score };
+        }).filter((item: { score: number }) => scoreSafe(item.score)).sort((a: { score: number }, b: { score: number }) => b.score - a.score).slice(0, 3);
+        currentMatches = ranked;
+        const container = resultPanel.querySelector<HTMLElement>('[data-class-results]');
+        if (container) {
+          container.replaceChildren();
+          ranked.forEach((item: { name: string; roleText: string; reason: string }, index: number) => {
+            const card = document.createElement('article');
+            card.className = 'class-result';
+            const rank = document.createElement('div');
+            rank.className = 'class-result-rank';
+            rank.textContent = `#${index + 1}`;
+            const title = document.createElement('h3');
+            title.textContent = item.name;
+            const roles = document.createElement('div');
+            roles.className = 'roles';
+            roles.textContent = item.roleText;
+            const reason = document.createElement('p');
+            reason.textContent = item.reason;
+            card.append(rank, title, roles, reason);
+            container.append(card);
+          });
+        }
+        resultPanel.hidden = false;
+        resultPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+      resultPanel.querySelector('[data-copy-classes]')?.addEventListener('click', async () => {
+        const text = [copy.resultPrefix, ...currentMatches.map((item, index) => `${index + 1}. ${item.name} (${item.roleText}) — ${item.reason}`)].join('\n');
+        const status = resultPanel.querySelector<HTMLElement>('[data-class-status]');
+        try { await navigator.clipboard.writeText(text); if (status) status.textContent = copy.copied; }
+        catch { if (status) status.textContent = text; }
+      });
+    }
+    function scoreSafe(score: number) { return score > -50; }
+  </script>
+</BaseLayout>
