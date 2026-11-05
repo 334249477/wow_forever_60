@@ -25,8 +25,9 @@ export const ui = {
     copied: '已复制',
     notOfficial: '非官方玩家网站，与暴雪娱乐无关。游戏名称与相关商标归各自权利人所有。',
     footerNote: '不写空话，不拿猜测冒充实测。每篇攻略都标明来源和更新时间。',
-    dataNote: '资料版本：2026-11-03 · 正式服数据核验中',
+    dataNote: '资料版本：2026-11-05 · 正式服数据核验中',
     nav: {
+      'first-day': '首日攻略',
       classes: '选职业',
       leveling: '练级路线',
       legacy: '传承点数',
@@ -52,8 +53,9 @@ export const ui = {
     copied: 'Copied',
     notOfficial: 'An unofficial fan site, not affiliated with Blizzard Entertainment. Game names and trademarks belong to their respective owners.',
     footerNote: 'No filler and no guesses presented as tested facts. Every guide lists its sources and update date.',
-    dataNote: 'Source review: November 3, 2026 · Live data being verified',
+    dataNote: 'Source review: November 5, 2026 · Live data being verified',
     nav: {
+      'first-day': 'First day',
       classes: 'Classes',
       leveling: 'Leveling',
       legacy: 'Legacy',
@@ -74,7 +76,7 @@ export function alternatePath(pathname: string, target: Locale) {
 }
 
 export function navItems(locale: Locale) {
-  return (['classes', 'leveling', 'legacy', 'camping', 'launch'] as const).map((slug) => ({
+  return (['first-day', 'classes', 'leveling', 'legacy', 'camping', 'launch'] as const).map((slug) => ({
     slug,
     label: ui[locale].nav[slug],
     href: localizedPath(locale, slug),

@@ -5,7 +5,7 @@ export default defineConfig({
   site: 'https://wowforever60.com',
   trailingSlash: 'always',
   server: {
-    allowedHosts: ['log-contents-wet-possession.trycloudflare.com'],
+    allowedHosts: ['bowl-anatomy-through-gig.trycloudflare.com'],
   },
   integrations: [sitemap({
     filter: (page) => page !== 'https://wowforever60.com/' && !page.includes('/404'),

@@ -9,23 +9,23 @@ const { locale, canonicalPath } = Astro.props;
 const copy = {
   zh: {
     title: `${siteNames.zh}｜魔兽世界无限服，开局直接抄作业`,
-    description: '魔兽世界无限服中英双语新手攻略：职业选择、1—60级练级、16点传承、专业营地搭配和开服准备清单。先看结论，再照着做。',
+    description: '魔兽世界无限服中英双语新手攻略：首日专业与传承、亡灵圣骑士选择、职业推荐、营地搭配和开服清单。先看结论，再照着做。',
     eyebrow: 'WOW FOREVER · 玩家自制攻略',
     heroA: '开局别抓瞎。',
     heroB: '直接抄作业。',
-    lead: '职业怎么选、升级先做什么、16点传承怎么点、营地带什么——把长篇研究压成能照着做的清单。',
-    primary: '30秒选职业', secondary: '先看开服清单',
-    countdown: '距离全球开服', days: '天', hours: '时', minutes: '分', live: '已经开服，进游戏吧',
+    lead: '专业有什么用、传承点怎么拿、亡灵圣骑士怎么选——把长篇研究压成今天就能照着做的清单。',
+    primary: '第一天直接照抄', secondary: '30秒选职业',
+    countdown: '全球同步开服', days: '天', hours: '时', minutes: '分', live: '已经开服，进游戏吧',
     cap: '等级上限', access: '进入条件', principle: '攻略原则', gameTime: '有效游戏时间', answer: '先答案，后原理',
-    stripTitle: '只记一件事', strip: '和朋友先选同一个规则集。不同规则集之间不能组队，别进游戏后才发现被迫分开。',
-    stripLink: '看懂规则集',
-    kicker: 'START HERE', sectionTitle: '现在最该看的', sectionLead: '不是资料仓库，是一份能执行的开服计划。', all: '全部开服准备',
+    stripTitle: '刚进游戏别乱点', strip: '专业20拿营地设施，非采集主专业150开始给传承点。先弄清这两个数字，再决定怎么花时间。',
+    stripLink: '看首日完整攻略',
+    kicker: 'START HERE', sectionTitle: '现在最该看的', sectionLead: '不是资料仓库，是一份能执行的开服计划。', all: '查看首日攻略',
     cards: [
+      { slug: 'first-day', icon: 'route', title: '第一天：专业与传承', text: '专业20/150/225/300分别有什么用，传承怎么顺路拿，附亡灵圣骑士选择。', link: '按清单做' },
       { slug: 'classes', icon: 'compass', title: '我该玩什么职业？', text: '按独狼、组队、职责和操作习惯筛选，不给你一张看不懂的强度榜。', link: '开始选择' },
-      { slug: 'launch', icon: 'clock', title: '开服前准备清单', text: '开服时间、游戏时间、礼包区别、规则集，6项可打勾检查。', link: '逐项检查' },
-      { slug: 'leveling', icon: 'route', title: '1—60级练级总览', text: '每阶段先做什么、哪些功能别漏，先看懂节奏再进游戏。', link: '规划路线' },
       { slug: 'legacy', icon: 'legacy', title: '16点传承怎么选', text: '不用被迫练小号。按练级、专业和独狼目标整理优先顺序。', link: '先看优先级' },
-      { slug: 'camping', icon: 'campfire', title: '营地专业搭配器', text: '最多放3件，坐1分钟拿增益。选专业后自动生成队伍清单。', link: '开始搭配' },
+      { slug: 'camping', icon: 'campfire', title: '营地专业搭配器', text: '最多放3件，每人提供1件。先查增益冲突，再复制队伍清单。', link: '开始搭配' },
+      { slug: 'launch', icon: 'clock', title: '开服准备清单', text: '游戏时间、礼包区别、体验预设与规则集，6项可打勾检查。', link: '逐项检查' },
       { slug: 'rulesets', icon: 'users', title: '规则集怎么选', text: '普通、PvP、角色扮演和硬核，一次讲清区别与组队限制。', link: '和朋友一起选' },
     ],
     processKicker: 'HOW IT WORKS', processTitle: '攻略只走三步', processLead: '把复杂留在我们这边，把简单留给你。',
@@ -39,23 +39,23 @@ const copy = {
   },
   en: {
     title: `${siteNames.en} | WoW Forever guides you can actually use`,
-    description: 'Practical WoW Forever guides in English and Chinese: class choices, level 1—60 planning, 16-point Legacy priorities, camping combos and launch preparation.',
+    description: 'Practical WoW Forever guides in English and Chinese: first-day professions and Legacy, Undead Paladin choices, class recommendations, camping combos and launch preparation.',
     eyebrow: 'WOW FOREVER · PLAYER-MADE GUIDES',
     heroA: 'Stop researching.',
     heroB: 'Start playing.',
-    lead: 'Which class, what to do first, how to spend 16 Legacy points, and what to bring to camp—long research turned into short, usable checklists.',
-    primary: 'Find my class in 30s', secondary: 'Launch checklist',
-    countdown: 'Until global launch', days: 'days', hours: 'hrs', minutes: 'min', live: 'Now live. See you in Azeroth!',
+    lead: 'What professions do, how to earn Legacy points, and which path fits an Undead Paladin—long research turned into a checklist you can use today.',
+    primary: 'Follow the first-day guide', secondary: 'Find my class in 30s',
+    countdown: 'Global launch', days: 'days', hours: 'hrs', minutes: 'min', live: 'Now live. See you in Azeroth!',
     cap: 'Level cap', access: 'Access', principle: 'Our rule', gameTime: 'Active game time', answer: 'Answer first, theory second',
-    stripTitle: 'Remember one thing', strip: 'Choose the same ruleset as your friends. Players on different rulesets cannot group together.',
-    stripLink: 'Compare rulesets',
-    kicker: 'START HERE', sectionTitle: 'What to read right now', sectionLead: 'Not a data warehouse. A launch plan you can follow.', all: 'All launch prep',
+    stripTitle: 'Just logged in? Start here', strip: 'Skill 20 unlocks camp features. Non-gathering primary professions start granting Legacy points at 150. Understand those two numbers before spending your time.',
+    stripLink: 'Read the first-day guide',
+    kicker: 'START HERE', sectionTitle: 'What to read right now', sectionLead: 'Not a data warehouse. A launch plan you can follow.', all: 'First-day guide',
     cards: [
+      { slug: 'first-day', icon: 'route', title: 'First day: professions and Legacy', text: 'What skill 20/150/225/300 mean, how to earn Legacy without detours, and an Undead Paladin path.', link: 'Follow the checklist' },
       { slug: 'classes', icon: 'compass', title: 'Which class should I play?', text: 'Filter by solo or group play, preferred role and experience. No unexplained tier list.', link: 'Find your class' },
-      { slug: 'launch', icon: 'clock', title: 'Launch preparation', text: 'Launch time, game time, optional packs and rulesets in six checkable steps.', link: 'Check the list' },
-      { slug: 'leveling', icon: 'route', title: 'Level 1—60 overview', text: 'What matters at each stage and which systems not to miss along the way.', link: 'Plan the journey' },
       { slug: 'legacy', icon: 'legacy', title: 'Your first 16 Legacy points', text: 'No mandatory alt army. Priorities for leveling, professions and solo play.', link: 'See the priorities' },
-      { slug: 'camping', icon: 'campfire', title: 'Camp combo builder', text: 'Up to three features and one minute for the benefits. Build and copy a group checklist.', link: 'Build a camp' },
+      { slug: 'camping', icon: 'campfire', title: 'Camp combo builder', text: 'Three slots, one feature per player. Check buff conflicts and copy a group checklist.', link: 'Build a camp' },
+      { slug: 'launch', icon: 'clock', title: 'Launch preparation', text: 'Game time, optional packs, experience presets and rulesets in six checkable steps.', link: 'Check the list' },
       { slug: 'rulesets', icon: 'users', title: 'Choose a ruleset', text: 'Normal, PvP, roleplaying and Hardcore, including the grouping restrictions.', link: 'Choose with friends' },
     ],
     processKicker: 'HOW IT WORKS', processTitle: 'Three steps. No lore essay.', processLead: 'We keep the complexity here so you can get back to the game.',
@@ -79,8 +79,8 @@ const iconName = (name: string) => name as 'compass' | 'route' | 'legacy' | 'cam
           <h1>{copy.heroA}<br /><em>{copy.heroB}</em></h1>
           <p class="hero-lead">{copy.lead}</p>
           <div class="button-row">
-            <a class="button button-primary" href={localizedPath(locale, 'classes')}>{copy.primary}<Icon name="arrow" size={18} /></a>
-            <a class="button button-secondary" href={localizedPath(locale, 'launch')}>{copy.secondary}</a>
+            <a class="button button-primary" href={localizedPath(locale, 'first-day')}>{copy.primary}<Icon name="arrow" size={18} /></a>
+            <a class="button button-secondary" href={localizedPath(locale, 'classes')}>{copy.secondary}</a>
           </div>
         </div>
         <aside class="hero-side" aria-label={copy.countdown}>
@@ -107,7 +107,7 @@ const iconName = (name: string) => name as 'compass' | 'route' | 'legacy' | 'cam
     <div class="quick-strip">
       <strong>{copy.stripTitle}</strong>
       <p>{copy.strip}</p>
-      <a class="text-link" href={localizedPath(locale, 'rulesets')}>{copy.stripLink}<Icon name="arrow" size={16} /></a>
+      <a class="text-link" href={localizedPath(locale, 'first-day')}>{copy.stripLink}<Icon name="arrow" size={16} /></a>
     </div>
   </div>
 
@@ -115,7 +115,7 @@ const iconName = (name: string) => name as 'compass' | 'route' | 'legacy' | 'cam
     <div class="container">
       <div class="section-header">
         <div><div class="section-kicker">{copy.kicker}</div><h2>{copy.sectionTitle}</h2><p>{copy.sectionLead}</p></div>
-        <a class="text-link" href={localizedPath(locale, 'launch')}>{copy.all}<Icon name="arrow" size={17} /></a>
+        <a class="text-link" href={localizedPath(locale, 'first-day')}>{copy.all}<Icon name="arrow" size={17} /></a>
       </div>
       <div class="card-grid">
         {copy.cards.map((card, index) => (

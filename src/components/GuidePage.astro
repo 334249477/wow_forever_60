@@ -80,7 +80,7 @@ const t = ui[locale];
 
       <div class="source-box">
         <Icon name="book" size={20} />
-        <div>{locale === 'zh' ? '本文根据官方公开资料整理，主观建议会单独说明；正式服数值与热修仍以游戏内为准。' : 'This guide is based on official public material. Editorial advice is identified separately; live values and hotfixes always take precedence in game.'} <a href={guide.source} target="_blank" rel="noreferrer">{t.source}</a></div>
+        <div>{locale === 'zh' ? '本文根据官方公开资料整理，主观建议会单独说明；正式服数值与热修仍以游戏内为准。' : 'This guide is based on official public material. Editorial advice is identified separately; live values and hotfixes always take precedence in game.'} <a href={guide.source} target="_blank" rel="noreferrer">{t.source}</a>{guide.sources?.map((item) => <> · <a href={item.url} target="_blank" rel="noreferrer">{item.label}</a></>)}</div>
       </div>
 
       <a class="guide-next" href={localizedPath(locale, guide.next.slug)}>

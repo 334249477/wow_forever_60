@@ -1,5 +1,6 @@
 import type { Locale } from '../i18n';
 import { campFeatures } from './camps';
+import { firstDayGuides } from './first-day';
 
 interface BlockBase {
   id: string;
@@ -18,7 +19,7 @@ export type GuideBlock = BlockBase & (
 
 export interface Guide {
   locale: Locale;
-  slug: 'launch' | 'rulesets' | 'leveling' | 'legacy' | 'camping';
+  slug: 'first-day' | 'launch' | 'rulesets' | 'leveling' | 'legacy' | 'camping';
   title: string;
   shortTitle: string;
   description: string;
@@ -28,6 +29,7 @@ export interface Guide {
   answer: string;
   updated: string;
   source: string;
+  sources?: { label: string; url: string }[];
   blocks: GuideBlock[];
   next: { slug: string; title: string; label: string };
 }
@@ -39,6 +41,7 @@ const campingSource = 'https://worldofwarcraft.blizzard.com/en-us/news/24301516/
 const updated = '2026-11-03';
 
 export const guides: Guide[] = [
+  ...firstDayGuides,
   {
     locale: 'zh', slug: 'launch', title: '无限服开服时间与准备清单', shortTitle: '开服清单',
     description: '魔兽世界无限服开服时间、游戏时间要求、天裔礼包区别、体验预设与规则集选择，附可保存的6项准备清单。',
@@ -154,38 +157,38 @@ export const guides: Guide[] = [
         '超过分配上限的点数仍会推进账号奖励路线，解锁宠物、玩具和坐骑等外观奖励。',
       ], note: { title: '优先级不等于最终点法', text: '下面是按官方效果整理的选择顺序，不假装已知所有专长层级与每级花费。进游戏后先打开传承树核对，再分配点数。' } },
       { id: 'priorities', type: 'cards', title: '按你的目标先看这些专长', items: [
-        { tag: '练级', title: '充分休息 → 冒险快感 → 天赋异禀', text: '提高休息经验获取和上限；击杀后回复生命与法力；更早获得天赋点。经常赶路再看“频繁飞行”。' },
-        { tag: '专业', title: '加班加点 → 丰饶收获 → 讨价还价', text: '提高技能提升机会、增加稀缺采集资源、降低商人价格。烹饪和钓鱼玩家再看对应专长。' },
-        { tag: '独狼', title: '冒险快感 → 战场急救 → 加固', text: '提高连续打怪回复，缩短绷带减益，并降低死亡耐久损失。减少回复和跑尸浪费的时间。' },
-        { tag: '团队辅助', title: '长久 → 材料节约', text: '延长团队与营地增益；让职业技能不再购买材料，并降低一级营地物件制作成本。' },
+        { tag: '练级', title: '精神抖擞 → 冒险刺激 → 才华横溢', text: '提高精力充沛经验获取和上限；击杀后回复生命与法力；更早获得天赋点。经常赶路再看“飞行常客”。' },
+        { tag: '专业', title: '加班加点 → 大丰收 → 以物易物', text: '提高技能提升机会、增加稀缺采集资源、降低商人价格。烹饪和钓鱼玩家再看对应专长。' },
+        { tag: '独狼', title: '冒险刺激 → 战地急救 → 强固', text: '提高连续打怪回复，缩短绷带减益，并降低死亡耐久损失。减少回复和跑尸浪费的时间。' },
+        { tag: '团队辅助', title: '恒久 → 材料节约', text: '延长团队与露营增益；让职业技能不再购买材料，并让1级露营设施免材料。' },
       ] },
       { id: 'perks', type: 'table', title: '三棵树的官方效果速查', headers: ['分支', '专长', '官方效果（简写）'], rows: [
-        ['专业', '加班加点 / Working Overtime', '提高所有专业技能提升机会，包括开锁'],
-        ['专业', '丰饶收获 / Bountiful Harvest', '采矿、采药或剥皮时发现更多稀缺资源'],
-        ['专业', '讨价还价 / Bartering', '降低商人出售物品的金币价格'],
-        ['专业', '表演 / Performance', '有时从贸易阵营获得更多商人青睐'],
-        ['专业', '大厨 / Master Chef', '烹饪配方有机会产出额外成品'],
-        ['专业', '鱼饵大师 / Luremaster', '钓鱼有机会获得额外鱼类'],
-        ['专业', '专注研习 / Dedicated Study', '每日冷却，帮助专业技能提升；全满后给元素精华'],
-        ['冒险', '充分休息 / Well Rested', '提高休息经验上限和积累速度'],
-        ['冒险', '冒险快感 / Thrill of Adventure', '击杀有价值的敌人后回复少量生命与法力'],
-        ['冒险', '高度警惕 / High Alert', '提高战场外的潜行侦测'],
-        ['冒险', '野外指南 / Field Guide', '缩短放置营地设施的1小时冷却'],
-        ['冒险', '战场急救 / Field Medicine', '缩短“最近包扎”减益；副本、团本和战场除外'],
-        ['冒险', '天赋异禀 / Talented', '最多提前5级解锁天赋点'],
-        ['冒险', '频繁飞行 / Frequent Flier', '降低飞行费用并提高飞行速度'],
-        ['资源', '美食家 / Gourmand', '延长食物增益持续时间'],
-        ['资源', '生死时速 / The Quick and the Dead', '提高跑尸速度，复活后的团队增益免费'],
-        ['资源', '加固 / Reinforce', '降低死亡造成的耐久损失'],
-        ['资源', '为了荣誉 / For Great Honor', '提高PvP荣誉获取'],
-        ['资源', '长久 / Permanence', '延长队伍、团队和营地增益持续时间'],
-        ['资源', '外交官 / Diplomat', '提高声望获取'],
-        ['资源', '材料节约 / Reagent Economy', '职业技能不再需要购买材料，一级营地设施免材料'],
+        ['专业', '加班加点 / Working Overtime', '提高所有商业技能提升机会，包括开锁'],
+        ['专业', '大丰收 / Bountiful Harvest', '采矿、采药或剥皮时发现更多稀缺资源'],
+        ['专业', '以物易物 / Bartering', '降低商人出售物品的金币价格'],
+        ['专业', '绩效奖金 / Performance', '有时从贸易阵营获得更多商人青睐'],
+        ['专业', '厨师长 / Master Chef', '烹饪配方有机会产出额外成品'],
+        ['专业', '诱饵大师 / Luremaster', '钓鱼有机会获得额外鱼类'],
+        ['专业', '潜心研究 / Dedicated Study', '每日冷却，帮助商业技能提升；全满后给元素精华'],
+        ['冒险', '精神抖擞 / Well Rested', '提高精力充沛经验上限和积累速度'],
+        ['冒险', '冒险刺激 / Thrill of Adventure', '击杀有经验或荣誉的敌人后回复少量生命与法力'],
+        ['冒险', '戒备森严 / High Alert', '提高战场外的潜行侦测'],
+        ['冒险', '野外指南 / Field Guide', '缩短放置露营设施的1小时冷却'],
+        ['冒险', '战地急救 / Field Medicine', '缩短“新近包扎”减益；副本、团本和战场除外'],
+        ['冒险', '才华横溢 / Talented', '最多提前5级解锁天赋点'],
+        ['冒险', '飞行常客 / Frequent Flier', '降低飞行费用并提高飞行速度'],
+        ['充裕', '食神 / Gourmand', '延长进食增益持续时间'],
+        ['充裕', '生者与死者 / The Quick and the Dead', '提高跑尸速度，复活后的队伍和团队增益免费'],
+        ['充裕', '强固 / Reinforce', '降低死亡造成的耐久损失'],
+        ['充裕', '无上的荣耀 / For Great Honor', '提高PvP荣誉获取'],
+        ['充裕', '恒久 / Permanence', '延长小队、团队和露营增益持续时间'],
+        ['充裕', '外交官 / Diplomat', '提高声望获取'],
+        ['充裕', '材料节约 / Reagent Economy', '职业技能不再需要购买材料，1级露营设施免材料'],
       ] },
       { id: 'spend-plan', type: 'steps', title: '实际分配前做三步', items: [
         { title: '先定这个角色的任务', text: '主练级、主专业还是主PvP？不要试图用有限点数同时照顾所有玩法。' },
         { title: '再核对前置与费用', text: '游戏内树的层级和实际点数花费决定最终顺序；优先级清单不能替代这一步。' },
-        { title: '最后保留调整意识', text: '每个角色独立分配。以后内容更新还会增加挑战、专长和分配上限。' },
+        { title: '点错可以调整', text: '需要调整天赋（包括传承天赋）时，可前往主城找职业训练师；以后内容更新还会增加挑战与专长。' },
       ] },
     ],
     next: { slug: 'camping', title: '传承看完，给队伍配一套营地增益。', label: '搭配营地' },
