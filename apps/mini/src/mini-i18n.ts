@@ -1,0 +1,58 @@
+export const miniText = {
+  zh: {
+    brand: '无限60', language: 'EN', home: '首页', back: '返回', official: '官方资料整理', editorial: '入门编辑建议',
+    answer: '先看结论', updated: '更新于', source: '官方来源', next: '下一步', copied: '已复制', clear: '清空', copy: '复制结果',
+    homeCopy: {
+      eyebrow: 'WOW FOREVER · 玩家自制攻略', titleA: '开局别抓瞎。', titleB: '直接抄作业。',
+      lead: '专业有什么用、传承点怎么拿、亡灵圣骑士怎么选——今天就能照着做。',
+      primary: '第一天直接照抄', secondary: '30秒选职业', live: '已开服', launch: '11月5日 07:00 全球同步上线',
+      quickTitle: '刚进游戏别乱点', quickText: '专业20拿营地设施，非采集主专业150开始给传承点。先弄清这两个数字，再决定怎么花时间。', quickLink: '看首日完整攻略',
+      section: '现在最该看的', sectionLead: '不是资料仓库，是一份能执行的开服计划。',
+      cards: [
+        { slug: 'first-day', title: '第一天：专业与传承', text: '专业节点、传承获取和亡灵圣骑士选择。', link: '按清单做' },
+        { slug: 'classes', title: '我该玩什么职业？', text: '按独狼、组队、职责和经验筛选。', link: '开始选择' },
+        { slug: 'legacy', title: '16点传承怎么选', text: '不用被迫练小号，先看目标优先级。', link: '查看优先级' },
+        { slug: 'camping', title: '营地专业搭配器', text: '最多3件，先查冲突再复制清单。', link: '开始搭配' },
+        { slug: 'launch', title: '开服准备清单', text: '游戏时间、礼包、预设和规则集。', link: '逐项检查' },
+        { slug: 'rulesets', title: '规则集怎么选', text: '普通、PvP、角色扮演和硬核。', link: '和朋友一起选' },
+      ],
+    },
+    classCopy: {
+      title: '别问谁最强，先问谁适合你', lead: '三个问题，给你三个匹配建议。结果是入门建议，不是强度排名。',
+      answer: '独狼新手先试猎人或圣骑士；喜欢多职责再看德鲁伊。有固定队伍再考虑战士坦克或治疗。重要的是你愿意长期玩它的日常玩法。',
+      role: '想承担什么职责？', style: '大多数时候怎么玩？', experience: '你的经典60级经验？', submit: '给我三个建议', result: '匹配结果', directory: '九个职业，各自适合谁？',
+      roles: [{ id: 'any', label: '还没想好' }, { id: 'tank', label: '坦克' }, { id: 'healer', label: '治疗' }, { id: 'dps', label: '输出' }],
+      styles: [{ id: 'solo', label: '独狼任务' }, { id: 'group', label: '和朋友组队' }],
+      experiences: [{ id: 'new', label: '第一次玩' }, { id: 'returning', label: '以前玩过' }, { id: 'veteran', label: '非常熟悉' }],
+    },
+    campCopy: { title: '三人营地搭配器', intro: '选择你们拥有的专业，最多3项。每名玩家只能贡献1件设施。', selected: '当前营地', slots: '个空位', empty: '还没有选择设施，先补队伍缺少的属性或回复。', copy: '复制营地清单', copied: '已复制，可以发给队友了', conflict: '互斥提示', guide: '查看完整营地说明', prefix: '无限60 · 三人基础营火清单', stay: '放置后，靠近营火坐下或制作至少1分钟。' },
+  },
+  en: {
+    brand: 'Forever 60', language: '中文', home: 'Home', back: 'Back', official: 'Official sources', editorial: 'Editorial starter advice',
+    answer: 'The short answer', updated: 'Updated', source: 'Official sources', next: 'Next up', copied: 'Copied', clear: 'Clear', copy: 'Copy result',
+    homeCopy: {
+      eyebrow: 'WOW FOREVER · PLAYER-MADE GUIDES', titleA: 'Stop researching.', titleB: 'Start playing.',
+      lead: 'What professions do, how to earn Legacy, and which path fits an Undead Paladin—a checklist for today.',
+      primary: 'Follow the first-day guide', secondary: 'Find my class in 30s', live: 'Now live', launch: 'Global launch: November 5, 07:00 Beijing time',
+      quickTitle: 'Just logged in? Start here', quickText: 'Skill 20 unlocks camp features. Non-gathering primary professions grant Legacy points from 150. Understand those two numbers first.', quickLink: 'Read the first-day guide',
+      section: 'What to read right now', sectionLead: 'Not a data warehouse. A launch plan you can follow.',
+      cards: [
+        { slug: 'first-day', title: 'First day: professions and Legacy', text: 'Profession milestones, Legacy routes and an Undead Paladin path.', link: 'Follow the checklist' },
+        { slug: 'classes', title: 'Which class should I play?', text: 'Filter by role, group play and experience.', link: 'Find your class' },
+        { slug: 'legacy', title: 'Your first 16 Legacy points', text: 'No alt army. Start with your actual goal.', link: 'See priorities' },
+        { slug: 'camping', title: 'Camp combo builder', text: 'Three slots, buff conflicts and a copyable checklist.', link: 'Build a camp' },
+        { slug: 'launch', title: 'Launch preparation', text: 'Game time, packs, presets and rulesets.', link: 'Check the list' },
+        { slug: 'rulesets', title: 'Choose a ruleset', text: 'Normal, PvP, roleplaying and Hardcore.', link: 'Choose with friends' },
+      ],
+    },
+    classCopy: {
+      title: 'Do not ask who is best. Ask what fits.', lead: 'Three questions, three starter matches—not a power ranking.',
+      answer: 'New and solo? Start with Hunter or Paladin, or Druid for multiple roles. With a regular group, Warrior tanking or healing may be worthwhile. Choose the everyday gameplay you will enjoy at 60.',
+      role: 'Which role appeals to you?', style: 'How will you play most often?', experience: 'Your Classic level-60 experience?', submit: 'Show my three matches', result: 'Your matches', directory: 'All nine classes, in plain language',
+      roles: [{ id: 'any', label: 'Not sure yet' }, { id: 'tank', label: 'Tank' }, { id: 'healer', label: 'Healer' }, { id: 'dps', label: 'Damage' }],
+      styles: [{ id: 'solo', label: 'Solo questing' }, { id: 'group', label: 'With a regular group' }],
+      experiences: [{ id: 'new', label: 'First time' }, { id: 'returning', label: 'Played before' }, { id: 'veteran', label: 'Know it well' }],
+    },
+    campCopy: { title: 'Three-slot camp builder', intro: 'Choose professions available to your group, up to three. Each player can contribute only one feature.', selected: 'Your camp', slots: 'slots left', empty: 'No features selected. Fill a stat or sustain gap first.', copy: 'Copy camp checklist', copied: 'Copied—ready to share with your party', conflict: 'Conflict note', guide: 'Read the full camping guide', prefix: 'Forever 60 · Basic Campfire checklist', stay: 'After placing, sit or craft near the fire for at least one minute.' },
+  },
+} as const;

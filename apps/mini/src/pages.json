@@ -1,0 +1,26 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": { "navigationBarTitleText": "无限60" }
+    },
+    {
+      "path": "pages/guide/index",
+      "style": { "navigationBarTitleText": "攻略" }
+    },
+    {
+      "path": "pages/classes/index",
+      "style": { "navigationBarTitleText": "职业选择" }
+    },
+    {
+      "path": "pages/camping/index",
+      "style": { "navigationBarTitleText": "营地搭配" }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarBackgroundColor": "#173f3a",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f6f5f0",
+    "backgroundTextStyle": "dark"
+  }
+}

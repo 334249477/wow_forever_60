@@ -1,0 +1,22 @@
+{
+  "name": "无限60",
+  "appid": "",
+  "description": "魔兽世界无限服中英双语新手攻略、职业选择与营地搭配",
+  "versionName": "0.1.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "h5": {
+    "title": "无限60 · Forever 60",
+    "router": { "mode": "hash" }
+  },
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "minified": true
+    },
+    "usingComponents": true,
+    "lazyCodeLoading": "requiredComponents"
+  }
+}
